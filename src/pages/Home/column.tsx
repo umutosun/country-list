@@ -30,7 +30,7 @@ export const columns = [
     cell: (info: any) => (
       <>
         {info.row.original.languages.map((language: any) => (
-          <p key={language.code}>{language.name}, </p>
+          <p key={language.code}>{language.name} </p>
         ))}
       </>
     ),
