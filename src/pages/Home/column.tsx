@@ -25,8 +25,14 @@ export const columns = [
     cell: (info: any) => <>{info.getValue()}</>,
   },
   {
-    accessorKey: "languages ",
-    header: "languages ",
-    cell: (info: any) => <>{info.getValue()}</>,
+    accessorKey: "languages",
+    header: "Languages",
+    cell: (info: any) => (
+      <>
+        {info.row.original.languages.map((language: any) => (
+          <p key={language.code}>{language.name}, </p>
+        ))}
+      </>
+    ),
   },
 ];
