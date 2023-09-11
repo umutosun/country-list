@@ -11,7 +11,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   const memoizedData = useMemo(() => data, [data]);
   const memoizedColumns = useMemo(() => columns, [columns]);
 
-  const [filtering, setFiltering] = useState<any>();
+  const [filtering, setFiltering] = useState<string>();
 
   const { getHeaderGroups, getRowModel } = useReactTable({
     data: memoizedData,
