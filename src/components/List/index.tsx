@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -37,6 +37,20 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
       setSelectedRowId(rowId);
     }
   };
+  const selectedRow = () => {
+    if (getRowModel().rows.length >= 10) {
+      const tenthRow = getRowModel().rows[9];
+      setSelectedCountry(tenthRow.original.name);
+      setSelectedRowId(tenthRow.id);
+    } else if (getRowModel().rows.length > 0) {
+      const lastRow = getRowModel().rows[getRowModel().rows.length - 1];
+      setSelectedCountry(lastRow.original.name);
+      setSelectedRowId(lastRow.id);
+    }
+  };
+  useEffect(() => {
+    selectedRow();
+  }, [filtering]);
 
   return (
     <div className="m-2 border-solid  border-2 border-customColors-gray500 rounded-lg">
@@ -78,7 +92,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
               }>
               {row.getVisibleCells().map((cell) => (
                 <th key={cell.id} className="h-20  flex-col">
-                  <p className="mt-5 text-sm">
+                  <div className="mt-5 text-sm">
                     {cell.column.id === "name" && (
                       <input
                         className="-ml-8"
@@ -93,7 +107,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
                       />
                     )}
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </p>
+                  </div>
                 </th>
               ))}
             </tr>
