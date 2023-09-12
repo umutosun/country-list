@@ -53,16 +53,14 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   }, [filtering]);
 
   return (
-    <div className="m-2 border-solid  border-2 border-customColors-gray500 rounded-lg">
-      <div className="flex m-2">
-        <input
-          type="text"
-          value={filtering}
-          placeholder="Search countries..."
-          onChange={(e) => setFiltering(e.target.value)}
-          className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500"
-        />
-      </div>
+    <div className="m-2 p-2 ">
+      <input
+        type="text"
+        value={filtering}
+        placeholder="Search countries..."
+        onChange={(e) => setFiltering(e.target.value)}
+        className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-0 mt-2 mb-1"
+      />
 
       <table>
         <tbody>
@@ -71,7 +69,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="w-72 border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-sm">
+                  className="w-56 border-solid border-customColors-gray500 border-2 uppercase p-4 text-xs bg-customColors-blue500">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -91,11 +89,13 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
                 row.id === selectedRowId ? "bg-customColors-green200" : ""
               }>
               {row.getVisibleCells().map((cell) => (
-                <th key={cell.id} className="h-20  flex-col">
-                  <div className="mt-5 text-sm">
+                <th
+                  key={cell.id}
+                  className="h-20 flex-col border-solid border-customColors-gray500 border-2">
+                  <div className="mt-5 inline ml-16 text-xs ">
                     {cell.column.id === "name" && (
                       <input
-                        className="-ml-8"
+                        className="absolute -ml-32 mt-6"
                         type="checkbox"
                         checked={cell.row.original.name === selectedCountry}
                         onChange={() =>
@@ -106,7 +106,20 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
                         }
                       />
                     )}
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <div className="">
+                      {cell.column.id === "name" ? (
+                        <span>
+                          {cell.row.original.name.length > 20
+                            ? cell.row.original.name.substring(0, 20)
+                            : cell.row.original.name}
+                        </span>
+                      ) : (
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )
+                      )}
+                    </div>
                   </div>
                 </th>
               ))}
