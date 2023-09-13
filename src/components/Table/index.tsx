@@ -14,9 +14,11 @@ const Table = ({ data, columns, filtering }: ListProps) => {
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
   const getRowClassName = (index: number) => {
     return index % 2 === 0 ? "bg-neutralColors-color300" : "bg-white";
   };
+
   const {
     getHeaderGroups,
     getRowModel,
@@ -62,6 +64,8 @@ const Table = ({ data, columns, filtering }: ListProps) => {
   useEffect(() => {
     selectedRow();
   }, [filtering]);
+
+  const noRows = getRowModel().rows.length === 0;
 
   return (
     <div className="m-4  border-solid  border-2 border-neutralColors-color500 rounded-lg ">
@@ -133,57 +137,65 @@ const Table = ({ data, columns, filtering }: ListProps) => {
         </tbody>
       </table>
 
-      <div className="flex gap-2 mt-4">
-        <button
-          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => setPageIndex(0)}
-          disabled={!getCanPreviousPage()}>
-          {"<<"}
-        </button>
-        <button
-          className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => previousPage()}
-          disabled={!getCanPreviousPage()}>
-          Previous Page
-        </button>
-        <button
-          className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => nextPage()}
-          disabled={!getCanNextPage()}>
-          Next Page
-        </button>
-        <button
-          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => setPageIndex(getPageCount() - 1)}
-          disabled={!getCanNextPage()}>
-          {">>"}
-        </button>
-        <input
-          className="border-solid border-2 border-neutralColors-color500 focus:outline-none focus:border-customColors-blue500"
-          type="number"
-          defaultValue={getState().pagination.pageIndex + 1}
-          onChange={(e) => {
-            const page = e.target.value ? Number(e.target.value) - 1 : 0;
-            setPageIndex(page);
-          }}
-        />
-        <p className="text-xl mt-1">
-          Page <strong>{getState().pagination.pageIndex + 1}</strong> of{" "}
-          <strong>{getPageCount()}</strong>
-        </p>
-        <select
-          className="text-xl"
-          value={getState().pagination.pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}>
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option value={pageSize} key={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      {noRows && (
+        <div className="text-center py-2 text-customColors-red600">
+          Böyle bir ülke yok
+        </div>
+      )}
+
+      {!noRows && (
+        <div className="flex gap-2 mt-4">
+          <button
+            className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
+            onClick={() => setPageIndex(0)}
+            disabled={!getCanPreviousPage()}>
+            {"<<"}
+          </button>
+          <button
+            className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
+            onClick={() => previousPage()}
+            disabled={!getCanPreviousPage()}>
+            Previous Page
+          </button>
+          <button
+            className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
+            onClick={() => nextPage()}
+            disabled={!getCanNextPage()}>
+            Next Page
+          </button>
+          <button
+            className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
+            onClick={() => setPageIndex(getPageCount() - 1)}
+            disabled={!getCanNextPage()}>
+            {">>"}
+          </button>
+          <input
+            className="border-solid border-2 border-neutralColors-color500 focus:outline-none focus:border-customColors-blue500"
+            type="number"
+            defaultValue={getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              setPageIndex(page);
+            }}
+          />
+          <p className="text-xl mt-1">
+            Page <strong>{getState().pagination.pageIndex + 1}</strong> of{" "}
+            <strong>{getPageCount()}</strong>
+          </p>
+          <select
+            className="text-xl"
+            value={getState().pagination.pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}>
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option value={pageSize} key={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 };
