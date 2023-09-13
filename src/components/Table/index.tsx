@@ -14,7 +14,9 @@ const Table = ({ data, columns, filtering }: ListProps) => {
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
-
+  const getRowClassName = (index: number) => {
+    return index % 2 === 0 ? "bg-neutralColors-color300" : "bg-white";
+  };
   const {
     getHeaderGroups,
     getRowModel,
@@ -62,7 +64,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
   }, [filtering]);
 
   return (
-    <div className="m-2 p-2 ">
+    <div className="m-4  border-solid  border-2 border-neutralColors-color500 rounded-lg ">
       <table>
         <tbody>
           {getHeaderGroups().map((headerGroup) => (
@@ -70,7 +72,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="w-56 border-solid border-customColors-gray500 border-2 uppercase p-4 text-xs bg-customColors-blue500">
+                  className="w-56 border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-xs ">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -83,16 +85,18 @@ const Table = ({ data, columns, filtering }: ListProps) => {
           ))}
         </tbody>
         <tbody>
-          {getRowModel().rows.map((row) => (
+          {getRowModel().rows.map((row, index) => (
             <tr
               key={row.id}
-              className={
-                row.id === selectedRowId ? "bg-customColors-green200" : ""
-              }>
+              className={`${
+                row.id === selectedRowId
+                  ? "bg-customColors-blue500"
+                  : getRowClassName(index)
+              }`}>
               {row.getVisibleCells().map((cell) => (
                 <th
                   key={cell.id}
-                  className="h-20 flex-col border-solid border-customColors-gray500 border-2">
+                  className="h-20 flex-col border-solid border-customColors-gray500 border-1">
                   <div className="mt-5 inline  text-xs ">
                     {cell.column.id === "name" && (
                       <input

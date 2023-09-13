@@ -30,7 +30,7 @@ const Home = () => {
             value={filtering}
             placeholder="Search countries..."
             onChange={(e) => setFiltering(e.target.value)}
-            className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-4 mt-2 mb-1"
+            className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-4 mt-2 mb-1 rounded-full p-1"
           />
           <List data={data.countries} columns={columns} filtering={filtering} />
         </>
