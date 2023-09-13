@@ -8,11 +8,9 @@ import {
 } from "@tanstack/react-table";
 import { ListProps } from "./types";
 
-const List = ({ data, columns, setRowSelection }: ListProps) => {
+const Table = ({ data, columns, filtering }: ListProps) => {
   const memoizedData = useMemo(() => data, [data]);
   const memoizedColumns = useMemo(() => columns, [columns]);
-
-  const [filtering, setFiltering] = useState<string>();
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
@@ -31,14 +29,12 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   } = useReactTable({
     data: memoizedData,
     columns: memoizedColumns,
-    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       globalFilter: filtering,
     },
-    onGlobalFilterChange: setFiltering,
   });
 
   const handleCheckboxChange = (countryName: string, rowId: string) => {
@@ -63,17 +59,10 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   };
   useEffect(() => {
     selectedRow();
-  }, [filtering, getState().pagination.pageIndex]);
+  }, [filtering]);
 
   return (
     <div className="m-2 p-2 ">
-      <input
-        type="text"
-        value={filtering}
-        placeholder="Search countries..."
-        onChange={(e) => setFiltering(e.target.value)}
-        className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-0 mt-2 mb-1"
-      />
       <table>
         <tbody>
           {getHeaderGroups().map((headerGroup) => (
@@ -104,10 +93,10 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
                 <th
                   key={cell.id}
                   className="h-20 flex-col border-solid border-customColors-gray500 border-2">
-                  <div className="mt-5 inline ml-16 text-xs ">
+                  <div className="mt-5 inline  text-xs ">
                     {cell.column.id === "name" && (
                       <input
-                        className="absolute -ml-32 mt-6"
+                        className="cursor-pointer"
                         type="checkbox"
                         checked={cell.row.original.name === selectedCountry}
                         onChange={() =>
@@ -143,37 +132,25 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
       <div className="flex gap-2 mt-4">
         <button
           className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => {
-            setPageIndex(0);
-            selectedRow();
-          }}
+          onClick={() => setPageIndex(0)}
           disabled={!getCanPreviousPage()}>
           {"<<"}
         </button>
         <button
           className="border-solid border-2 border-customColors-blue300 bg-customColors-blue500 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => {
-            previousPage();
-            selectedRow();
-          }}
+          onClick={() => previousPage()}
           disabled={!getCanPreviousPage()}>
           Previous Page
         </button>
         <button
           className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => {
-            nextPage();
-            selectedRow();
-          }}
+          onClick={() => nextPage()}
           disabled={!getCanNextPage()}>
           Next Page
         </button>
         <button
           className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
-          onClick={() => {
-            setPageIndex(getPageCount() - 1);
-            selectedRow();
-          }}
+          onClick={() => setPageIndex(getPageCount() - 1)}
           disabled={!getCanNextPage()}>
           {">>"}
         </button>
@@ -187,7 +164,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
           }}
         />
         <p className="text-xl mt-1">
-          Page <strong>{getState().pagination.pageIndex}</strong> of{" "}
+          Page <strong>{getState().pagination.pageIndex + 1}</strong> of{" "}
           <strong>{getPageCount() - 1}</strong>
         </p>
         <select
@@ -207,4 +184,4 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   );
 };
 
-export default List;
+export default Table;

@@ -1,6 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import { List } from "../../components";
 import { columns } from "./column";
+import { useState } from "react";
 
 const GET_COUNTRIES = gql`
   query {
@@ -19,8 +20,23 @@ const GET_COUNTRIES = gql`
 `;
 const Home = () => {
   const { data } = useQuery(GET_COUNTRIES);
-
-  return <div>{data && <List data={data.countries} columns={columns} />}</div>;
+  const [filtering, setFiltering] = useState("");
+  return (
+    <div>
+      {data && (
+        <>
+          <input
+            type="text"
+            value={filtering}
+            placeholder="Search countries..."
+            onChange={(e) => setFiltering(e.target.value)}
+            className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-4 mt-2 mb-1"
+          />
+          <List data={data.countries} columns={columns} filtering={filtering} />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Home;
