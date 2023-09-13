@@ -96,7 +96,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
                   <div className="mt-5 inline  text-xs ">
                     {cell.column.id === "name" && (
                       <input
-                        className="cursor-pointer"
+                        className=" absolute -ml-24 cursor-pointer"
                         type="checkbox"
                         checked={cell.row.original.name === selectedCountry}
                         onChange={() =>
@@ -165,7 +165,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
         />
         <p className="text-xl mt-1">
           Page <strong>{getState().pagination.pageIndex + 1}</strong> of{" "}
-          <strong>{getPageCount() - 1}</strong>
+          <strong>{getPageCount()}</strong>
         </p>
         <select
           className="text-xl"
