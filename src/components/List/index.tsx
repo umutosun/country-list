@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
   getFilteredRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { ListProps } from "./types";
 
@@ -16,12 +17,24 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
 
-  const { getHeaderGroups, getRowModel } = useReactTable({
+  const {
+    getHeaderGroups,
+    getRowModel,
+    setPageIndex,
+    getPageCount,
+    previousPage,
+    nextPage,
+    getCanPreviousPage,
+    getCanNextPage,
+    getState,
+    setPageSize,
+  } = useReactTable({
     data: memoizedData,
     columns: memoizedColumns,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     state: {
       globalFilter: filtering,
     },
@@ -50,7 +63,7 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
   };
   useEffect(() => {
     selectedRow();
-  }, [filtering]);
+  }, [filtering, getState().pagination.pageIndex]);
 
   return (
     <div className="m-2 p-2 ">
@@ -61,7 +74,6 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
         onChange={(e) => setFiltering(e.target.value)}
         className="border-solid w-72 border-2 border-customColors-gray500 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-customColors-blue500 ml-0 mt-2 mb-1"
       />
-
       <table>
         <tbody>
           {getHeaderGroups().map((headerGroup) => (
@@ -127,6 +139,70 @@ const List = ({ data, columns, setRowSelection }: ListProps) => {
           ))}
         </tbody>
       </table>
+
+      <div className="flex gap-2 mt-4">
+        <button
+          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
+          onClick={() => {
+            setPageIndex(0);
+            selectedRow();
+          }}
+          disabled={!getCanPreviousPage()}>
+          {"<<"}
+        </button>
+        <button
+          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue500 p-1 text-customColors-blue100 disabled:opacity-50"
+          onClick={() => {
+            previousPage();
+            selectedRow();
+          }}
+          disabled={!getCanPreviousPage()}>
+          Previous Page
+        </button>
+        <button
+          className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
+          onClick={() => {
+            nextPage();
+            selectedRow();
+          }}
+          disabled={!getCanNextPage()}>
+          Next Page
+        </button>
+        <button
+          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
+          onClick={() => {
+            setPageIndex(getPageCount() - 1);
+            selectedRow();
+          }}
+          disabled={!getCanNextPage()}>
+          {">>"}
+        </button>
+        <input
+          className="border-solid border-2 border-neutralColors-color500 focus:outline-none focus:border-customColors-blue500"
+          type="number"
+          defaultValue={getState().pagination.pageIndex + 1}
+          onChange={(e) => {
+            const page = e.target.value ? Number(e.target.value) - 1 : 0;
+            setPageIndex(page);
+          }}
+        />
+        <p className="text-xl mt-1">
+          Page <strong>{getState().pagination.pageIndex}</strong> of{" "}
+          <strong>{getPageCount() - 1}</strong>
+        </p>
+        <select
+          className="text-xl"
+          value={getState().pagination.pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}>
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option value={pageSize} key={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
