@@ -141,7 +141,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
           {"<<"}
         </button>
         <button
-          className="border-solid border-2 border-customColors-blue300 bg-customColors-blue500 p-1 text-customColors-blue100 disabled:opacity-50"
+          className="border-solid border-2 border-customColors-blue300 bg-customColors-purple600 p-1 text-customColors-blue100 disabled:opacity-50"
           onClick={() => previousPage()}
           disabled={!getCanPreviousPage()}>
           Previous Page
