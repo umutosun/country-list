@@ -68,7 +68,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
   const noRows = getRowModel().rows.length === 0;
 
   return (
-    <div className="m-4  border-solid  border-2 border-neutralColors-color500 rounded-lg ">
+    <div className="m-4 border-solid  border-2 border-neutralColors-color500 rounded-lg ">
       <table>
         <tbody>
           {getHeaderGroups().map((headerGroup) => (
@@ -76,7 +76,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="w-56 border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-xs ">
+                  className="2xl:w-72 laptop:w-60 desktop:w-80 w-56  border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-xs ">
                   {header.isPlaceholder
                     ? null
                     : flexRender(

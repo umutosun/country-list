@@ -2,6 +2,10 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      laptop: "1440px",
+      desktop: "1920px",
+    },
     extend: {
       fontFamily: {
         sans: [
