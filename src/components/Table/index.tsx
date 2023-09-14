@@ -68,7 +68,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
   const noRows = getRowModel().rows.length === 0;
 
   return (
-    <div className="m-4 border-solid  border-2 border-neutralColors-color500 rounded-lg ">
+    <div className="m-4 border-solid border-2 border-neutralColors-color500 rounded-lg ">
       <table>
         <tbody>
           {getHeaderGroups().map((headerGroup) => (
@@ -76,7 +76,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="2xl:w-72 laptop:w-60 desktop:w-80 w-56  border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-xs ">
+                  className="2xl:w-72 laptop:w-60 desktop:w-80 w-56 border-solid border-customColors-gray500 border-b-2 uppercase p-4 text-xs">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -101,10 +101,10 @@ const Table = ({ data, columns, filtering }: ListProps) => {
                 <th
                   key={cell.id}
                   className="h-20 flex-col border-solid border-customColors-gray500 border-1">
-                  <div className="mt-5 inline  text-xs ">
+                  <div className="mt-5 inline text-xs ">
                     {cell.column.id === "name" && (
                       <input
-                        className=" absolute -ml-24 cursor-pointer"
+                        className="absolute -ml-24 cursor-pointer"
                         type="checkbox"
                         checked={cell.row.original.name === selectedCountry}
                         onChange={() =>
@@ -115,7 +115,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
                         }
                       />
                     )}
-                    <div className="">
+                    <div>
                       {cell.column.id === "name" ? (
                         <span>
                           {cell.row.original.name.length > 20
@@ -138,13 +138,13 @@ const Table = ({ data, columns, filtering }: ListProps) => {
       </table>
 
       {noRows && (
-        <div className="text-center py-2 text-customColors-red600">
-          Böyle bir ülke yok
+        <div className="text-center py-2 text-white bg-customColors-blue500">
+          <h1 className="text-xl">There is no such country</h1>
         </div>
       )}
 
       {!noRows && (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-4 items-center justify-center mb-4">
           <button
             className="border-solid border-2 border-customColors-blue300 bg-customColors-blue600 p-1 text-customColors-blue100 disabled:opacity-50"
             onClick={() => setPageIndex(0)}
@@ -170,7 +170,7 @@ const Table = ({ data, columns, filtering }: ListProps) => {
             {">>"}
           </button>
           <input
-            className="border-solid border-2 border-neutralColors-color500 focus:outline-none focus:border-customColors-blue500"
+            className="border-solid border-2 border-neutralColors-color600 focus:outline-none focus:border-customColors-blue500 text-xl"
             type="number"
             defaultValue={getState().pagination.pageIndex + 1}
             onChange={(e) => {
@@ -183,13 +183,13 @@ const Table = ({ data, columns, filtering }: ListProps) => {
             <strong>{getPageCount()}</strong>
           </p>
           <select
-            className="text-xl"
+            className="text-xl border-solid border-2 border-neutralColors-color600 hover:bg-customColors-blue100"
             value={getState().pagination.pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
             }}>
             {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option value={pageSize} key={pageSize}>
+              <option value={pageSize} key={pageSize} className="">
                 Show {pageSize}
               </option>
             ))}
